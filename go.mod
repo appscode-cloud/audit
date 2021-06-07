@@ -7,11 +7,12 @@ require (
 	github.com/google/uuid v1.1.2
 	github.com/nats-io/nats.go v1.11.0
 	go.bytebuilders.dev/license-verifier v0.9.2
-	k8s.io/apimachinery v0.21.0
-	k8s.io/client-go v0.21.0
+	k8s.io/apimachinery v0.21.1
+	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.8.0
 	kmodules.xyz/client-go v0.0.0-20210605021217-cabaee7b953e
 	kmodules.xyz/resource-metadata v0.5.6-0.20210605023550-078e9b8f32c7
+	sigs.k8s.io/controller-runtime v0.9.0-beta.6
 )
 
 replace bitbucket.org/ww/goautoneg => gomodules.xyz/goautoneg v0.0.0-20120707110453-a547fc61f48d
