@@ -79,6 +79,9 @@ func NewResilientEventPublisher(
 	p.connect = func() error {
 		var err error
 		p.nats, err = fnConnect()
+		if err != nil {
+			klog.ErrorS(err, "failed to connect with nats")
+		}
 		return err
 	}
 	return p
