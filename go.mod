@@ -7,6 +7,7 @@ require (
 	github.com/google/uuid v1.1.2
 	github.com/nats-io/nats.go v1.11.0
 	go.bytebuilders.dev/license-verifier v0.9.2
+	gomodules.xyz/sync v0.1.0
 	k8s.io/apimachinery v0.21.1
 	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.8.0
