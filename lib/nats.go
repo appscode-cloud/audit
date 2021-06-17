@@ -73,11 +73,13 @@ func NewNatsConfig(client corev1.NamespaceInterface, LicenseFile string) (*NatsC
 	}
 	data, err := json.Marshal(opts)
 	if err != nil {
+		klog.ErrorS(err, "json.Marshal")
 		return nil, err
 	}
 
 	resp, err := http.Post(info.RegistrationAPIEndpoint(), "application/json", bytes.NewReader(data))
 	if err != nil {
+		klog.ErrorS(err, "http post")
 		return nil, err
 	}
 	defer resp.Body.Close()
@@ -85,6 +87,7 @@ func NewNatsConfig(client corev1.NamespaceInterface, LicenseFile string) (*NatsC
 	var buf bytes.Buffer
 	_, err = io.Copy(&buf, resp.Body)
 	if err != nil {
+		klog.ErrorS(err, "io.Copy")
 		return nil, err
 	}
 
@@ -95,6 +98,7 @@ func NewNatsConfig(client corev1.NamespaceInterface, LicenseFile string) (*NatsC
 	var natscred NatsCredential
 	err = json.Unmarshal(buf.Bytes(), &natscred)
 	if err != nil {
+		klog.ErrorS(err, "unmarshal resp body")
 		return nil, err
 	}
 
@@ -123,6 +127,7 @@ func NewConnection(natscred NatsCredential) (nc *nats.Conn, err error) {
 
 	credFile := "/tmp/nats.creds"
 	if err = ioutil.WriteFile(credFile, natscred.Credential, 0600); err != nil {
+		klog.ErrorS(err, "failed to write file")
 		return nil, err
 	}
 
