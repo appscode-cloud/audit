@@ -85,11 +85,6 @@ func NewResilientEventPublisher(
 }
 
 func (p *EventPublisher) Publish(ev *api.Event, et api.EventType) error {
-	p.once.Do(p.connect)
-	if p.nats == nil {
-		return fmt.Errorf("not connected to nats")
-	}
-
 	event := cloudeventssdk.NewEvent()
 	setEventDefaults(&event, p.nats.Subject, et)
 
@@ -150,11 +145,18 @@ func (p *EventPublisher) ForGVK(gvk schema.GroupVersionKind) cache.ResourceEvent
 				return nil, err
 			}
 			m.SetManagedFields(nil)
+
 			ev, err := p.createEvent(r)
 			if err != nil {
 				return nil, err
 			}
+
+			p.once.Do(p.connect)
+			if p.nats == nil {
+				return nil, fmt.Errorf("not connected to nats")
+			}
 			ev.LicenseID = p.nats.LicenseID
+
 			return ev, nil
 		},
 	}
