@@ -97,11 +97,11 @@ func (p *EventPublisher) Publish(ev *api.Event, et api.EventType) error {
 		return err
 	}
 
-	ctx, cancel := context.WithTimeout(context.TODO(), time.Second*30)
+	ctx, cancel := context.WithTimeout(context.TODO(), natsEventPublishTimeout)
 	defer cancel()
 
 	for {
-		_, err = p.nats.Client.Request(p.nats.Subject, data, time.Second*5)
+		_, err = p.nats.Client.Request(p.nats.Subject, data, natsRequestTimeout)
 		if err == nil {
 			cancel()
 		} else {

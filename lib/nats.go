@@ -36,8 +36,10 @@ import (
 )
 
 const (
-	connectionTimeout = 350 * time.Millisecond
-	retryInterval     = 100 * time.Millisecond
+	natsConnectionTimeout       = 350 * time.Millisecond
+	natsConnectionRetryInterval = 100 * time.Millisecond
+	natsEventPublishTimeout     = 10 * time.Second
+	natsRequestTimeout          = 2 * time.Second
 )
 
 type NatsConfig struct {
@@ -116,7 +118,7 @@ func NewConnection(natscred NatsCredential) (nc *nats.Conn, err error) {
 		nats.ErrorHandler(errorHandler),
 		nats.ReconnectHandler(reconnectHandler),
 		nats.DisconnectErrHandler(disconnectHandler),
-		//nats.UseOldRequestStyle(),
+		// nats.UseOldRequestStyle(),
 	}
 
 	credFile := "/tmp/nats.creds"
@@ -135,10 +137,10 @@ func NewConnection(natscred NatsCredential) (nc *nats.Conn, err error) {
 	//}
 
 	// initial connections can error due to DNS lookups etc, just retry, eventually with backoff
-	ctx, cancel := context.WithTimeout(context.Background(), connectionTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), natsConnectionTimeout)
 	defer cancel()
 
-	ticker := time.NewTicker(retryInterval)
+	ticker := time.NewTicker(natsConnectionRetryInterval)
 	for {
 		select {
 		case <-ticker.C:
