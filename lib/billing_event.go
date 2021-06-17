@@ -26,8 +26,7 @@ import (
 )
 
 type BillingEventCreator struct {
-	Mapper    discovery.ResourceMapper
-	LicenseID string
+	Mapper discovery.ResourceMapper
 }
 
 func (p *BillingEventCreator) CreateEvent(obj runtime.Object) (*api.Event, error) {
@@ -51,6 +50,5 @@ func (p *BillingEventCreator) CreateEvent(obj runtime.Object) (*api.Event, error
 	return &api.Event{
 		Resource:   r,
 		ResourceID: *rid,
-		LicenseID:  p.LicenseID,
 	}, nil
 }

@@ -684,6 +684,8 @@ gomodules.xyz/pointer v0.0.0-20201105071923-daf60fa55209/go.mod h1:sPLsC0+yLTRec
 gomodules.xyz/sets v0.0.0-20200930152147-4f4543544799/go.mod h1:jKgNp01/iDs+svOWXaPk5cKP3VXy0mWUoTF/ore+aMc=
 gomodules.xyz/sets v0.0.0-20210218105342-2efe2fb519a2 h1:JhyydLTz2aE09lMNheZHt6FHa9kJK1jWJuXe0vDM430=
 gomodules.xyz/sets v0.0.0-20210218105342-2efe2fb519a2/go.mod h1:jKgNp01/iDs+svOWXaPk5cKP3VXy0mWUoTF/ore+aMc=
+gomodules.xyz/sync v0.0.0-20201105042349-3c834d722081 h1:mWitAFDyn0YgJUzSYb5nVStF0vWYjIlUuZxziEb9+Xg=
+gomodules.xyz/sync v0.0.0-20201105042349-3c834d722081/go.mod h1:kv570yCdknyiZ8Y94uaRFGBC5E47TV/5A7PD9jlnJoQ=
 gomodules.xyz/version v0.1.0/go.mod h1:Y8xuV02mL/45psyPKG3NCVOwvAOy6T5Kx0l3rCjKSjU=
 gomodules.xyz/wait v0.0.0-20210218105358-639bd9211545/go.mod h1:g/epKzZQuCqgvhzhaoG4cSBNGHqnOrhFR4Q7szDJ1JM=
 gomodules.xyz/x v0.0.2/go.mod h1:E7ulagfan4tGmqGE07MD0J8o3HvCcPR862vYRvR0qd4=
