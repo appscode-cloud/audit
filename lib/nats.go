@@ -73,13 +73,11 @@ func NewNatsConfig(client corev1.NamespaceInterface, LicenseFile string) (*NatsC
 	}
 	data, err := json.Marshal(opts)
 	if err != nil {
-		klog.ErrorS(err, "json.Marshal")
 		return nil, err
 	}
 
 	resp, err := http.Post(info.RegistrationAPIEndpoint(), "application/json", bytes.NewReader(data))
 	if err != nil {
-		klog.ErrorS(err, "http post")
 		return nil, err
 	}
 	defer resp.Body.Close()
@@ -87,7 +85,6 @@ func NewNatsConfig(client corev1.NamespaceInterface, LicenseFile string) (*NatsC
 	var buf bytes.Buffer
 	_, err = io.Copy(&buf, resp.Body)
 	if err != nil {
-		klog.ErrorS(err, "io.Copy")
 		return nil, err
 	}
 
@@ -98,11 +95,10 @@ func NewNatsConfig(client corev1.NamespaceInterface, LicenseFile string) (*NatsC
 	var natscred NatsCredential
 	err = json.Unmarshal(buf.Bytes(), &natscred)
 	if err != nil {
-		klog.ErrorS(err, "unmarshal resp body")
 		return nil, err
 	}
 
-	klog.InfoS("using nats server", "server", natscred.Server, "subject", natscred.Subject, "licenseID", natscred.LicenseID)
+	klog.V(5).InfoS("using event receiver", "address", natscred.Server, "subject", natscred.Subject, "licenseID", natscred.LicenseID)
 
 	natscred.Client, err = NewConnection(natscred)
 	if err != nil {
@@ -127,7 +123,6 @@ func NewConnection(natscred NatsCredential) (nc *nats.Conn, err error) {
 
 	credFile := "/tmp/nats.creds"
 	if err = ioutil.WriteFile(credFile, natscred.Credential, 0600); err != nil {
-		klog.ErrorS(err, "failed to write file")
 		return nil, err
 	}
 
@@ -153,7 +148,7 @@ func NewConnection(natscred NatsCredential) (nc *nats.Conn, err error) {
 			if err == nil {
 				return nc, nil
 			}
-			klog.Infof("could not connect to NATS: %s\n", err)
+			klog.V(5).InfoS("failed to connect to event receiver", "error", err)
 		case <-ctx.Done():
 			return nil, ctx.Err()
 		}
@@ -163,23 +158,22 @@ func NewConnection(natscred NatsCredential) (nc *nats.Conn, err error) {
 // called during errors subscriptions etc
 func errorHandler(nc *nats.Conn, s *nats.Subscription, err error) {
 	if s != nil {
-		klog.Infof("Error in NATS connection: %s: subscription: %s: %s", nc.ConnectedUrl(), s.Subject, err)
+		klog.V(5).Infof("error in event receiver connection: %s: subscription: %s: %s", nc.ConnectedUrl(), s.Subject, err)
 		return
 	}
-
-	klog.Infof("Error in NATS connection: %s: %s", nc.ConnectedUrl(), err)
+	klog.V(5).Infof("Error in event receiver connection: %s: %s", nc.ConnectedUrl(), err)
 }
 
 // called after reconnection
 func reconnectHandler(nc *nats.Conn) {
-	klog.Infof("Reconnected to %s", nc.ConnectedUrl())
+	klog.V(5).Infof("Reconnected to %s", nc.ConnectedUrl())
 }
 
 // called after disconnection
 func disconnectHandler(nc *nats.Conn, err error) {
 	if err != nil {
-		klog.Infof("Disconnected from NATS due to error: %v", err)
+		klog.V(5).Infof("Disconnected from event receiver due to error: %v", err)
 	} else {
-		klog.Infof("Disconnected from NATS")
+		klog.V(5).Infof("Disconnected from event receiver")
 	}
 }

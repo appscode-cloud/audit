@@ -183,7 +183,7 @@ gomodules.xyz/jsonpath
 gomodules.xyz/jsonpath/third_party/forked/golang/template
 # gomodules.xyz/sets v0.0.0-20210218105342-2efe2fb519a2
 gomodules.xyz/sets
-# gomodules.xyz/sync v0.0.0-20201105042349-3c834d722081
+# gomodules.xyz/sync v0.1.0
 ## explicit
 gomodules.xyz/sync
 # gomodules.xyz/x v0.0.5

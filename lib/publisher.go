@@ -80,7 +80,7 @@ func NewResilientEventPublisher(
 		var err error
 		p.nats, err = fnConnect()
 		if err != nil {
-			klog.ErrorS(err, "failed to connect with nats")
+			klog.V(5).InfoS("failed to connect with event receiver", "error", err)
 		}
 		return err
 	}
@@ -108,15 +108,15 @@ func (p *EventPublisher) Publish(ev *api.Event, et api.EventType) error {
 		if err == nil {
 			cancel()
 		} else {
-			klog.Warningln(err)
+			klog.V(5).Infoln(err)
 		}
 
 		select {
 		case <-ctx.Done():
 			if ctx.Err() == context.DeadlineExceeded {
-				klog.Warningf("failed to send event : %s", string(data))
+				klog.V(5).Infof("failed to send event : %s", string(data))
 			} else if ctx.Err() == context.Canceled {
-				klog.Infof("Published event `%s` to channel `%s` and acknowledged", et, p.nats.Subject)
+				klog.V(5).Infof("Published event `%s` to channel `%s` and acknowledged", et, p.nats.Subject)
 			}
 			return nil
 		default:
@@ -180,24 +180,24 @@ func (p *ResourceEventPublisher) OnAdd(o interface{}) {
 
 	ev, err := p.createEvent(obj)
 	if err != nil {
-		klog.ErrorS(err, "failed to create event data")
+		klog.V(5).InfoS("failed to create event data", "error", err)
 		return
 	}
 
 	if err = p.p.Publish(ev, api.EventCreate); err != nil {
-		klog.Errorf("Error while publishing event, reason: %v", err)
+		klog.V(5).InfoS("error while publishing event", "error", err)
 	}
 }
 
 func (p *ResourceEventPublisher) OnUpdate(oldObj, newObj interface{}) {
 	uOld, err := meta.Accessor(oldObj)
 	if err != nil {
-		klog.ErrorS(err, "failed to get accessor for old object")
+		klog.V(5).InfoS("failed to get accessor for old object", "error", err)
 		return
 	}
 	uNew, err := meta.Accessor(newObj)
 	if err != nil {
-		klog.ErrorS(err, "failed to get accessor for new object")
+		klog.V(5).InfoS("failed to get accessor for new object", "error", err)
 		return
 	}
 
@@ -219,12 +219,12 @@ func (p *ResourceEventPublisher) OnUpdate(oldObj, newObj interface{}) {
 
 	ev, err := p.createEvent(obj)
 	if err != nil {
-		klog.ErrorS(err, "failed to create event data")
+		klog.V(5).InfoS("failed to create event data", "error", err)
 		return
 	}
 
 	if err = p.p.Publish(ev, api.EventUpdate); err != nil {
-		klog.Errorf("Error while publishing event, reason: %v", err)
+		klog.V(5).InfoS("failed to publish event", "error", err)
 	}
 }
 
@@ -234,7 +234,7 @@ func (p *ResourceEventPublisher) OnDelete(obj interface{}) {
 	if object, ok = obj.(runtime.Object); !ok {
 		tombstone, ok := obj.(cache.DeletedFinalStateUnknown)
 		if !ok {
-			klog.Error("error decoding object, invalid type")
+			klog.V(5).Info("error decoding object, invalid type")
 			return
 		}
 		object, ok = tombstone.Obj.(runtime.Object)
@@ -242,17 +242,17 @@ func (p *ResourceEventPublisher) OnDelete(obj interface{}) {
 			utilruntime.HandleError(fmt.Errorf("error decoding object tombstone, invalid type"))
 			return
 		}
-		klog.V(4).Infof("Recovered deleted object '%v' from tombstone", tombstone.Obj.(metav1.Object).GetName())
+		klog.V(5).Infof("Recovered deleted object '%v' from tombstone", tombstone.Obj.(metav1.Object).GetName())
 	}
 
 	ev, err := p.createEvent(object)
 	if err != nil {
-		klog.ErrorS(err, "failed to create event data")
+		klog.V(5).InfoS("failed to create event data", "error", err)
 		return
 	}
 
 	if err := p.p.Publish(ev, api.EventDelete); err != nil {
-		klog.Errorf("Error while publishing event, reason: %v", err)
+		klog.V(5).InfoS("failed to publish event", "error", err)
 	}
 }
 
