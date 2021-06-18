@@ -89,9 +89,9 @@ func NewResilientEventPublisher(
 func (p *EventPublisher) Publish(ev *api.Event, et api.EventType) error {
 	event := cloudeventssdk.NewEvent()
 	event.SetID(fmt.Sprintf("%s.%d", ev.Resource.GetUID(), ev.Resource.GetGeneration()))
-	// byte.builders/auditor/license_id/feature/info.ProductName/api_group/api_resource/
+	// /byte.builders/auditor/license_id/feature/info.ProductName/api_group/api_resource/
 	// ref: https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#source-1
-	event.SetSource(fmt.Sprintf("byte.builders/auditor/%s/feature/%s/%s/%s", ev.LicenseID, info.ProductName, ev.ResourceID.Group, ev.ResourceID.Name))
+	event.SetSource(fmt.Sprintf("/byte.builders/auditor/%s/feature/%s/%s/%s", ev.LicenseID, info.ProductName, ev.ResourceID.Group, ev.ResourceID.Name))
 	// obj.getUID
 	// ref: https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#subject
 	event.SetSubject(string(ev.Resource.GetUID()))
