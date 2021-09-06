@@ -128,7 +128,7 @@ github.com/yudai/gojsondiff
 github.com/yudai/gojsondiff/formatter
 # github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82
 github.com/yudai/golcs
-# go.bytebuilders.dev/license-verifier v0.9.2
+# go.bytebuilders.dev/license-verifier v0.9.3
 ## explicit
 go.bytebuilders.dev/license-verifier
 go.bytebuilders.dev/license-verifier/apis/licenses
@@ -179,12 +179,10 @@ gomodules.xyz/jsonpatch/v2
 # gomodules.xyz/jsonpath v0.0.1
 gomodules.xyz/jsonpath
 gomodules.xyz/jsonpath/third_party/forked/golang/template
-# gomodules.xyz/sets v0.0.0-20210218105342-2efe2fb519a2
-gomodules.xyz/sets
 # gomodules.xyz/sync v0.1.0
 ## explicit
 gomodules.xyz/sync
-# gomodules.xyz/x v0.0.5
+# gomodules.xyz/x v0.0.7
 gomodules.xyz/x/strings
 # google.golang.org/appengine v1.6.7
 google.golang.org/appengine/internal
@@ -563,7 +561,7 @@ k8s.io/utils/pointer
 k8s.io/utils/trace
 # kmodules.xyz/apiversion v0.2.0
 kmodules.xyz/apiversion
-# kmodules.xyz/client-go v0.0.0-20210617233340-13d22e91512b
+# kmodules.xyz/client-go v0.0.0-20210906194857-e63ff8f45d6e
 ## explicit
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
