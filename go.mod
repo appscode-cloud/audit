@@ -3,15 +3,15 @@ module go.bytebuilders.dev/audit
 go 1.16
 
 require (
-	github.com/cloudevents/sdk-go/v2 v2.4.1
-	github.com/nats-io/nats.go v1.11.0
+	github.com/cloudevents/sdk-go/v2 v2.5.0
+	github.com/nats-io/nats.go v1.12.3
 	go.bytebuilders.dev/license-verifier v0.9.3
 	gomodules.xyz/sync v0.1.0
 	k8s.io/apimachinery v0.21.1
 	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.8.0
 	kmodules.xyz/client-go v0.0.0-20210906194857-e63ff8f45d6e
-	kmodules.xyz/resource-metadata v0.5.7
+	kmodules.xyz/resource-metadata v0.6.0
 	sigs.k8s.io/controller-runtime v0.9.0
 )
 
