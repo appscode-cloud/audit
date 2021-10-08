@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/cloudevents/sdk-go/v2 v2.5.0
-	github.com/nats-io/nats.go v1.12.3
+	github.com/nats-io/nats.go v1.13.0
 	go.bytebuilders.dev/license-verifier v0.9.3
 	gomodules.xyz/sync v0.1.0
 	k8s.io/apimachinery v0.21.1
