@@ -569,7 +569,7 @@ k8s.io/utils/pointer
 k8s.io/utils/trace
 # kmodules.xyz/apiversion v0.2.0
 kmodules.xyz/apiversion
-# kmodules.xyz/client-go v0.0.0-20211028120227-48eb36f92a30
+# kmodules.xyz/client-go v0.0.0-20211028132207-0cf6ea46b030
 ## explicit
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
