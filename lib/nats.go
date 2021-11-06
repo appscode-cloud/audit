@@ -113,7 +113,7 @@ func NewConnection(natscred NatsCredential) (nc *nats.Conn, err error) {
 	servers := natscred.Server
 
 	opts := []nats.Option{
-		nats.Name("Auditor"),
+		nats.Name(fmt.Sprintf("%s.%s", natscred.LicenseID, info.ProductName)),
 		nats.MaxReconnects(-1),
 		nats.ErrorHandler(errorHandler),
 		nats.ReconnectHandler(reconnectHandler),
