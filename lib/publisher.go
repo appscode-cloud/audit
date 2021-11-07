@@ -27,6 +27,7 @@ import (
 	cloudeventssdk "github.com/cloudevents/sdk-go/v2"
 	"github.com/cloudevents/sdk-go/v2/binding/format"
 	cloudevents "github.com/cloudevents/sdk-go/v2/event"
+	"github.com/nats-io/nats.go"
 	"go.bytebuilders.dev/license-verifier/info"
 	"gomodules.xyz/sync"
 	core "k8s.io/api/core/v1"
@@ -97,6 +98,14 @@ func NewResilientEventPublisher(
 		return err
 	}
 	return p
+}
+
+func (p *EventPublisher) NatsClient() (*nats.Conn, error) {
+	p.once.Do(p.connect)
+	if p.nats == nil {
+		return nil, fmt.Errorf("not connected to nats")
+	}
+	return p.nats.Client, nil
 }
 
 func (p *EventPublisher) Publish(ev *api.Event, et api.EventType) error {
