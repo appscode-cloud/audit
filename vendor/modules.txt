@@ -569,7 +569,7 @@ k8s.io/utils/pointer
 k8s.io/utils/trace
 # kmodules.xyz/apiversion v0.2.0
 kmodules.xyz/apiversion
-# kmodules.xyz/client-go v0.0.0-20211028132207-0cf6ea46b030
+# kmodules.xyz/client-go v0.0.0-20211122091731-6c471b24a4ea
 ## explicit
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
@@ -581,7 +581,7 @@ kmodules.xyz/client-go/dynamic/factory
 kmodules.xyz/client-go/meta
 kmodules.xyz/client-go/tools/clientcache
 kmodules.xyz/client-go/tools/clusterid
-# kmodules.xyz/custom-resources v0.0.0-20211007080833-72bd9e8cae6e
+# kmodules.xyz/custom-resources v0.0.0-20211122142737-3bf3dbd8ac52
 ## explicit
 kmodules.xyz/custom-resources/apis/auditor
 kmodules.xyz/custom-resources/apis/auditor/v1alpha1
