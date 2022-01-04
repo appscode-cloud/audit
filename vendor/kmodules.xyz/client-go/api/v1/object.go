@@ -113,3 +113,24 @@ func (oid *ObjectID) ObjectReference() ObjectReference {
 func (oid *ObjectID) ObjectKey() client.ObjectKey {
 	return client.ObjectKey{Namespace: oid.Namespace, Name: oid.Name}
 }
+
+type ObjectInfo struct {
+	Resource ResourceID      `json:"resource" protobuf:"bytes,1,opt,name=resource"`
+	Ref      ObjectReference `json:"ref" protobuf:"bytes,2,opt,name=ref"`
+}
+
+// +kubebuilder:validation:Enum=auth_via;backup_via;catalog;connect_via;exposed_by;monitored_by;offshoot;restore_into;scaled_by;view
+type EdgeLabel string
+
+const (
+	EdgeAuthVia     EdgeLabel = "auth_via"
+	EdgeBackupVia   EdgeLabel = "backup_via"
+	EdgeCatalog     EdgeLabel = "catalog"
+	EdgeConnectVia  EdgeLabel = "connect_via"
+	EdgeExposedBy   EdgeLabel = "exposed_by"
+	EdgeMonitoredBy EdgeLabel = "monitored_by"
+	EdgeOffshoot    EdgeLabel = "offshoot"
+	EdgeRestoreInto EdgeLabel = "restore_into"
+	EdgeScaledBy    EdgeLabel = "scaled_by"
+	EdgeView        EdgeLabel = "view"
+)
