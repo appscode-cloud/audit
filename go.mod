@@ -11,8 +11,8 @@ require (
 	k8s.io/apimachinery v0.21.1
 	k8s.io/client-go v0.21.1
 	k8s.io/klog/v2 v2.8.0
-	kmodules.xyz/client-go v0.0.0-20211231190151-a89b45cbdb3b
-	kmodules.xyz/custom-resources v0.0.0-20211221073415-ab9b13cfc659
+	kmodules.xyz/client-go v0.0.0-20220104114408-2a3a05dbe89f
+	kmodules.xyz/custom-resources v0.0.0-20220104123914-3c036dd7c1cd
 	sigs.k8s.io/controller-runtime v0.9.0
 )
 
