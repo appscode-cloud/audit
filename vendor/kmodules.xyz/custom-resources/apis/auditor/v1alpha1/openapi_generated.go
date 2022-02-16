@@ -15977,21 +15977,15 @@ func schema_custom_resources_apis_auditor_v1alpha1_KubernetesInfo(ref common.Ref
 				Properties: map[string]spec.Schema{
 					"clusterName": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Deprecated",
+							Description: "https://github.com/kmodules/client-go/blob/master/tools/clusterid/lib.go",
 							Type:        []string{"string"},
 							Format:      "",
 						},
 					},
 					"clusterUID": {
 						SchemaProps: spec.SchemaProps{
-							Description: "Deprecated",
-							Type:        []string{"string"},
-							Format:      "",
-						},
-					},
-					"cluster": {
-						SchemaProps: spec.SchemaProps{
-							Ref: ref("kmodules.xyz/client-go/api/v1.ClusterMetadata"),
+							Type:   []string{"string"},
+							Format: "",
 						},
 					},
 					"version": {
@@ -16015,7 +16009,7 @@ func schema_custom_resources_apis_auditor_v1alpha1_KubernetesInfo(ref common.Ref
 			},
 		},
 		Dependencies: []string{
-			"k8s.io/apimachinery/pkg/version.Info", "kmodules.xyz/client-go/api/v1.ClusterMetadata", "kmodules.xyz/custom-resources/apis/auditor/v1alpha1.ControlPlaneInfo", "kmodules.xyz/custom-resources/apis/auditor/v1alpha1.NodeStats"},
+			"k8s.io/apimachinery/pkg/version.Info", "kmodules.xyz/custom-resources/apis/auditor/v1alpha1.ControlPlaneInfo", "kmodules.xyz/custom-resources/apis/auditor/v1alpha1.NodeStats"},
 	}
 }
 
@@ -16154,10 +16148,12 @@ func schema_custom_resources_apis_auditor_v1alpha1_SiteInfo(ref common.Reference
 					},
 					"kubernetes": {
 						SchemaProps: spec.SchemaProps{
-							Ref: ref("kmodules.xyz/custom-resources/apis/auditor/v1alpha1.KubernetesInfo"),
+							Default: map[string]interface{}{},
+							Ref:     ref("kmodules.xyz/custom-resources/apis/auditor/v1alpha1.KubernetesInfo"),
 						},
 					},
 				},
+				Required: []string{"kubernetes"},
 			},
 		},
 		Dependencies: []string{
