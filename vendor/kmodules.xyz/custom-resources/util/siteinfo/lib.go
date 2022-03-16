@@ -41,7 +41,6 @@ func GetSiteInfo(cfg *rest.Config, kc kubernetes.Interface, nodes []*core.Node, 
 			APIVersion: auditorapi.SchemeGroupVersion.String(),
 			Kind:       "SiteInfo",
 		},
-		Kubernetes: &auditorapi.KubernetesInfo{},
 	}
 
 	if info.ProductName != "" || v.Version.Version != "" || licenseID != "" {
@@ -64,11 +63,12 @@ func GetSiteInfo(cfg *rest.Config, kc kubernetes.Interface, nodes []*core.Node, 
 		}
 	}
 
-	cmeta, err := clusterid.ClusterMetadata(kc.CoreV1().Namespaces())
+	var err error
+	si.Kubernetes.ClusterName = clusterid.ClusterName()
+	si.Kubernetes.ClusterUID, err = clusterid.ClusterUID(kc.CoreV1().Namespaces())
 	if err != nil {
 		return nil, err
 	}
-	si.Kubernetes.Cluster = cmeta
 	si.Kubernetes.Version, err = kc.Discovery().ServerVersion()
 	if err != nil {
 		return nil, err
