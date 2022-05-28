@@ -13,7 +13,7 @@ require (
 	k8s.io/klog/v2 v2.9.0
 	kmodules.xyz/client-go v0.0.0-20220317213815-2a6d5a5784f2
 	kmodules.xyz/custom-resources v0.0.0-20220208103158-61b298634e43
-	kmodules.xyz/resource-metadata v0.10.16-0.20220419233724-fbd1b7e25b05
+	kmodules.xyz/resource-metadata v0.10.17
 	sigs.k8s.io/controller-runtime v0.9.0
 )
 
