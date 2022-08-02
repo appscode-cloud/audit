@@ -7,7 +7,7 @@ require (
 	github.com/nats-io/nats.go v1.16.0
 	github.com/pkg/errors v0.9.1
 	go.bytebuilders.dev/license-proxyserver v0.0.2-0.20220802031002-926d24a28f5d
-	go.bytebuilders.dev/license-verifier v0.10.0
+	go.bytebuilders.dev/license-verifier v0.11.0
 	gomodules.xyz/sync v0.1.0
 	k8s.io/api v0.24.3
 	k8s.io/apimachinery v0.24.3
