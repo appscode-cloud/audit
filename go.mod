@@ -3,8 +3,8 @@ module go.bytebuilders.dev/audit
 go 1.18
 
 require (
-	github.com/cloudevents/sdk-go/v2 v2.10.1
-	github.com/nats-io/nats.go v1.16.0
+	github.com/cloudevents/sdk-go/v2 v2.11.0
+	github.com/nats-io/nats.go v1.15.0
 	github.com/pkg/errors v0.9.1
 	go.bytebuilders.dev/license-proxyserver v0.0.2-0.20220828020610-878ba2bd7cb2
 	go.bytebuilders.dev/license-verifier v0.11.1-0.20220827213833-8fc2de2a63b5
@@ -89,7 +89,7 @@ require (
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/component-base v0.24.2 // indirect
 	k8s.io/kube-openapi v0.0.0-20220413171646-5e7f5fdc6da6 // indirect
 	k8s.io/utils v0.0.0-20220210201930-3a6ce19ff2f9 // indirect
