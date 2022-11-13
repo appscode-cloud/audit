@@ -4,19 +4,19 @@ go 1.18
 
 require (
 	github.com/cloudevents/sdk-go/v2 v2.11.0
-	github.com/nats-io/nats.go v1.17.0
+	github.com/nats-io/nats.go v1.20.0
 	github.com/pkg/errors v0.9.1
-	go.bytebuilders.dev/license-proxyserver v0.0.2-0.20220917050045-ddf98e6752c8
-	go.bytebuilders.dev/license-verifier v0.12.0
+	go.bytebuilders.dev/license-proxyserver v0.0.2-0.20221113070558-69a84f79c7ee
+	go.bytebuilders.dev/license-verifier v0.12.1-0.20221113063237-6eb88040dd50
 	gomodules.xyz/sync v0.1.0
 	k8s.io/api v0.25.1
 	k8s.io/apimachinery v0.25.1
 	k8s.io/client-go v0.25.1
 	k8s.io/klog/v2 v2.80.1
-	kmodules.xyz/client-go v0.25.0
+	kmodules.xyz/client-go v0.25.10
 	kmodules.xyz/custom-resources v0.25.0
 	kmodules.xyz/resource-metadata v0.13.0
-	sigs.k8s.io/controller-runtime v0.13.0
+	sigs.k8s.io/controller-runtime v0.13.1
 )
 
 require (
@@ -97,6 +97,7 @@ require (
 	k8s.io/component-base v0.25.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20220803162953-67bda5d908f1 // indirect
 	k8s.io/utils v0.0.0-20220823124924-e9cbc92d1a73 // indirect
+	kmodules.xyz/apiversion v0.2.0 // indirect
 	kmodules.xyz/offshoot-api v0.25.0 // indirect
 	kmodules.xyz/resource-metrics v0.25.0 // indirect
 	sigs.k8s.io/cli-utils v0.33.0 // indirect
