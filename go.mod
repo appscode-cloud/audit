@@ -10,12 +10,12 @@ require (
 	go.bytebuilders.dev/license-verifier v0.12.2
 	gomodules.xyz/sync v0.1.0
 	k8s.io/api v0.25.1
-	k8s.io/apimachinery v0.25.1
+	k8s.io/apimachinery v0.25.3
 	k8s.io/client-go v0.25.1
 	k8s.io/klog/v2 v2.80.1
 	kmodules.xyz/client-go v0.25.15
 	kmodules.xyz/custom-resources v0.25.1
-	kmodules.xyz/resource-metadata v0.14.0
+	kmodules.xyz/resource-metadata v0.15.0
 	sigs.k8s.io/controller-runtime v0.13.1
 )
 
@@ -74,12 +74,12 @@ require (
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.21.0 // indirect
-	golang.org/x/crypto v0.0.0-20220926161630-eccd6366d1be // indirect
-	golang.org/x/net v0.1.0 // indirect
+	golang.org/x/crypto v0.6.0 // indirect
+	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/oauth2 v0.1.0 // indirect
-	golang.org/x/sys v0.1.0 // indirect
-	golang.org/x/term v0.1.0 // indirect
-	golang.org/x/text v0.4.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/term v0.5.0 // indirect
+	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/time v0.0.0-20220922220347-f3bd1da661af // indirect
 	gomodules.xyz/encoding v0.0.7 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect
