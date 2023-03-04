@@ -198,7 +198,7 @@ github.com/yudai/gojsondiff/formatter
 # github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82
 ## explicit
 github.com/yudai/golcs
-# go.bytebuilders.dev/license-proxyserver v0.0.2
+# go.bytebuilders.dev/license-proxyserver v0.0.3
 ## explicit; go 1.18
 go.bytebuilders.dev/license-proxyserver/apis/proxyserver
 go.bytebuilders.dev/license-proxyserver/apis/proxyserver/v1alpha1
