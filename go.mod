@@ -6,7 +6,7 @@ require (
 	github.com/cloudevents/sdk-go/v2 v2.11.0
 	github.com/nats-io/nats.go v1.22.1
 	github.com/pkg/errors v0.9.1
-	go.bytebuilders.dev/license-proxyserver v0.0.2
+	go.bytebuilders.dev/license-proxyserver v0.0.3
 	go.bytebuilders.dev/license-verifier v0.12.2
 	gomodules.xyz/sync v0.1.0
 	k8s.io/api v0.25.1

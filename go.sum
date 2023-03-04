@@ -317,8 +317,8 @@ github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9de
 github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
-go.bytebuilders.dev/license-proxyserver v0.0.2 h1:f4A3AVex9+lGqjuUqJx81ccphFPoIbCHrnGe6eVKPcA=
-go.bytebuilders.dev/license-proxyserver v0.0.2/go.mod h1:iMJbPzDf2R2EJOZwRi7ziEr5DBMfT9Cm75/XfPb/QnU=
+go.bytebuilders.dev/license-proxyserver v0.0.3 h1:vAFMBWfrlmFKNspjBm2KfPXnxYnC17xLwZiHmVzUmzs=
+go.bytebuilders.dev/license-proxyserver v0.0.3/go.mod h1:iMJbPzDf2R2EJOZwRi7ziEr5DBMfT9Cm75/XfPb/QnU=
 go.bytebuilders.dev/license-verifier v0.12.2 h1:S+4BMR1E7Ii6qDYKDYzt9+VgMRsOyQvdOiwHhLJ6wCc=
 go.bytebuilders.dev/license-verifier v0.12.2/go.mod h1:ahObOawJ+6AuFZUBZi6Dp3g4Q9AboqD97eH+bQPsLQw=
 go.opencensus.io v0.21.0/go.mod h1:mSImk1erAIZhrmZN+AvHh14ztQfjbGwt4TtuofqLduU=
