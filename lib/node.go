@@ -38,7 +38,7 @@ type SiteInfoPublisher struct {
 
 var _ cache.ResourceEventHandler = &SiteInfoPublisher{}
 
-func (p *SiteInfoPublisher) OnAdd(o interface{}) {
+func (p *SiteInfoPublisher) OnAdd(o interface{}, isInInitialList bool) {
 	obj, ok := o.(client.Object)
 	if !ok {
 		return

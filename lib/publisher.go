@@ -56,7 +56,7 @@ type Informer interface {
 	// AddEventHandlerWithResyncPeriod adds an event handler to the shared informer using the
 	// specified resync period.  Events to a single handler are delivered sequentially, but there is
 	// no coordination between different handlers.
-	AddEventHandlerWithResyncPeriod(handler cache.ResourceEventHandler, resyncPeriod time.Duration)
+	AddEventHandlerWithResyncPeriod(handler cache.ResourceEventHandler, resyncPeriod time.Duration) (cache.ResourceEventHandlerRegistration, error)
 }
 
 type EventCreator func(obj client.Object) (*api.Event, error)
@@ -192,7 +192,7 @@ func (p *EventPublisher) ForGVK(informer Informer, gvk schema.GroupVersionKind) 
 			return ev, nil
 		},
 	}
-	informer.AddEventHandlerWithResyncPeriod(h, eventInterval)
+	_, _ = informer.AddEventHandlerWithResyncPeriod(h, eventInterval)
 }
 
 type funcNodeLister func() ([]*core.Node, error)
@@ -239,7 +239,7 @@ func (p *EventPublisher) setupSiteInfoPublisher(cfg *rest.Config, kc kubernetes.
 		p.si.Product = new(auditorapi.ProductInfo)
 	}
 
-	nodeInformer.AddEventHandlerWithResyncPeriod(&SiteInfoPublisher{
+	_, err = nodeInformer.AddEventHandlerWithResyncPeriod(&SiteInfoPublisher{
 		p: p,
 		createEvent: func(_ client.Object) (*api.Event, error) {
 			cmeta, err := clusterid.ClusterMetadata(kc.CoreV1().Namespaces())
@@ -277,7 +277,7 @@ func (p *EventPublisher) setupSiteInfoPublisher(cfg *rest.Config, kc kubernetes.
 			return ev, nil
 		},
 	}, eventInterval)
-	return nil
+	return err
 }
 
 func (p *EventPublisher) SetupWithManagerForKind(ctx context.Context, mgr manager.Manager, gvk schema.GroupVersionKind) error {
