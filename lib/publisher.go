@@ -29,6 +29,7 @@ import (
 	cloudevents "github.com/cloudevents/sdk-go/v2/event"
 	"github.com/nats-io/nats.go"
 	"go.bytebuilders.dev/license-verifier/info"
+	"gomodules.xyz/counter/hourly"
 	"gomodules.xyz/sync"
 	core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -171,7 +172,8 @@ func (p *EventPublisher) ForGVK(informer Informer, gvk schema.GroupVersionKind) 
 	}
 
 	h := &ResourceEventPublisher{
-		p: p,
+		p:        p,
+		counters: map[kmapi.OID]int32{},
 		createEvent: func(obj client.Object) (*api.Event, error) {
 			r := obj.DeepCopyObject().(client.Object)
 			r.GetObjectKind().SetGroupVersionKind(gvk)
@@ -302,6 +304,9 @@ func (p *EventPublisher) SetupWithManager(ctx context.Context, mgr manager.Manag
 type ResourceEventPublisher struct {
 	p           *EventPublisher
 	createEvent EventCreator
+
+	counters map[kmapi.OID]int32
+	mu       gosync.Mutex
 }
 
 var _ cache.ResourceEventHandler = &ResourceEventPublisher{}
@@ -320,12 +325,36 @@ func (p *ResourceEventPublisher) OnAdd(o interface{}) {
 
 	if err = p.p.Publish(ev, api.EventCreated); err != nil {
 		klog.V(5).InfoS("error while publishing event", "error", err)
+		return
 	}
+
+	p.mu.Lock()
+	c := p.counters[kmapi.NewObjectID(obj).OID()]
+	hourly.Inc32(&c)
+	p.mu.Unlock()
 }
 
-func (p *ResourceEventPublisher) OnUpdate(_, newObj interface{}) {
+func (p *ResourceEventPublisher) OnUpdate(oldObj, newObj interface{}) {
 	uNew, ok := newObj.(client.Object)
 	if !ok {
+		return
+	}
+
+	alreadySentHourly := false
+	oid := kmapi.NewObjectID(uNew).OID()
+	p.mu.Lock()
+	c := p.counters[oid]
+	alreadySentHourly = hourly.Get32(&c) > 0
+	p.mu.Unlock()
+
+	if alreadySentHourly {
+		if klog.V(8).Enabled() {
+			klog.V(8).InfoS("skipping update event",
+				"gvk", uNew.GetObjectKind().GroupVersionKind(),
+				"namespace", uNew.GetNamespace(),
+				"name", uNew.GetName(),
+			)
+		}
 		return
 	}
 
@@ -337,7 +366,13 @@ func (p *ResourceEventPublisher) OnUpdate(_, newObj interface{}) {
 
 	if err = p.p.Publish(ev, api.EventUpdated); err != nil {
 		klog.V(5).InfoS("failed to publish event", "error", err)
+		return
 	}
+
+	p.mu.Lock()
+	c = p.counters[oid]
+	hourly.Inc32(&c)
+	p.mu.Unlock()
 }
 
 func (p *ResourceEventPublisher) OnDelete(obj interface{}) {
@@ -365,5 +400,11 @@ func (p *ResourceEventPublisher) OnDelete(obj interface{}) {
 
 	if err := p.p.Publish(ev, api.EventDeleted); err != nil {
 		klog.V(5).InfoS("failed to publish event", "error", err)
+		return
 	}
+
+	p.mu.Lock()
+	c := p.counters[kmapi.NewObjectID(object).OID()]
+	hourly.Inc32(&c)
+	p.mu.Unlock()
 }

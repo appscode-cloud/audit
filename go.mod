@@ -1,19 +1,20 @@
 module go.bytebuilders.dev/audit
 
-go 1.18
+go 1.21.5
 
 require (
 	github.com/cloudevents/sdk-go/v2 v2.11.0
 	github.com/nats-io/nats.go v1.31.0
 	github.com/pkg/errors v0.9.1
-	go.bytebuilders.dev/license-proxyserver v0.0.3
-	go.bytebuilders.dev/license-verifier v0.12.2
+	go.bytebuilders.dev/license-proxyserver v0.0.6
+	go.bytebuilders.dev/license-verifier v0.13.4
+	gomodules.xyz/counter v0.0.1
 	gomodules.xyz/sync v0.1.0
 	k8s.io/api v0.25.3
 	k8s.io/apimachinery v0.25.3
 	k8s.io/client-go v0.25.3
 	k8s.io/klog/v2 v2.80.1
-	kmodules.xyz/client-go v0.25.43
+	kmodules.xyz/client-go v0.25.44
 	kmodules.xyz/custom-resources v0.25.1
 	kmodules.xyz/resource-metadata v0.17.5
 	sigs.k8s.io/controller-runtime v0.13.1
@@ -47,6 +48,7 @@ require (
 	github.com/huandu/xstrings v1.3.1 // indirect
 	github.com/imdario/mergo v0.3.13 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
+	github.com/jonboulle/clockwork v0.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.17.0 // indirect
@@ -80,7 +82,7 @@ require (
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/term v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
-	golang.org/x/time v0.0.0-20220922220347-f3bd1da661af // indirect
+	golang.org/x/time v0.0.0-20220722155302-e5dcc9cfc0b9 // indirect
 	gomodules.xyz/encoding v0.0.7 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.4.0 // indirect
 	gomodules.xyz/jsonpath v0.0.2 // indirect

@@ -110,6 +110,9 @@ github.com/imdario/mergo
 # github.com/inconshreveable/mousetrap v1.0.1
 ## explicit; go 1.18
 github.com/inconshreveable/mousetrap
+# github.com/jonboulle/clockwork v0.4.0
+## explicit; go 1.15
+github.com/jonboulle/clockwork
 # github.com/josharian/intern v1.0.0
 ## explicit; go 1.5
 github.com/josharian/intern
@@ -200,14 +203,14 @@ github.com/yudai/gojsondiff/formatter
 # github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82
 ## explicit
 github.com/yudai/golcs
-# go.bytebuilders.dev/license-proxyserver v0.0.3
+# go.bytebuilders.dev/license-proxyserver v0.0.6
 ## explicit; go 1.18
 go.bytebuilders.dev/license-proxyserver/apis/proxyserver
 go.bytebuilders.dev/license-proxyserver/apis/proxyserver/v1alpha1
 go.bytebuilders.dev/license-proxyserver/client/clientset/versioned
 go.bytebuilders.dev/license-proxyserver/client/clientset/versioned/scheme
 go.bytebuilders.dev/license-proxyserver/client/clientset/versioned/typed/proxyserver/v1alpha1
-# go.bytebuilders.dev/license-verifier v0.12.2
+# go.bytebuilders.dev/license-verifier v0.13.4
 ## explicit; go 1.18
 go.bytebuilders.dev/license-verifier
 go.bytebuilders.dev/license-verifier/apis/licenses
@@ -269,9 +272,12 @@ golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
 golang.org/x/text/width
-# golang.org/x/time v0.0.0-20220922220347-f3bd1da661af
+# golang.org/x/time v0.0.0-20220722155302-e5dcc9cfc0b9
 ## explicit
 golang.org/x/time/rate
+# gomodules.xyz/counter v0.0.1
+## explicit; go 1.21.5
+gomodules.xyz/counter/hourly
 # gomodules.xyz/encoding v0.0.7
 ## explicit; go 1.17
 gomodules.xyz/encoding/json
@@ -716,7 +722,7 @@ k8s.io/utils/trace
 # kmodules.xyz/apiversion v0.2.0
 ## explicit; go 1.14
 kmodules.xyz/apiversion
-# kmodules.xyz/client-go v0.25.43
+# kmodules.xyz/client-go v0.25.44
 ## explicit; go 1.18
 kmodules.xyz/client-go
 kmodules.xyz/client-go/api/v1
