@@ -335,6 +335,10 @@ func (p *ResourceEventPublisher) OnAdd(o interface{}) {
 }
 
 func (p *ResourceEventPublisher) OnUpdate(oldObj, newObj interface{}) {
+	uOld, ok := oldObj.(client.Object)
+	if !ok {
+		return
+	}
 	uNew, ok := newObj.(client.Object)
 	if !ok {
 		return
@@ -347,7 +351,8 @@ func (p *ResourceEventPublisher) OnUpdate(oldObj, newObj interface{}) {
 	alreadySentHourly = hourly.Get32(&c) > 0
 	p.mu.Unlock()
 
-	if alreadySentHourly {
+	if alreadySentHourly &&
+		uOld.GetUID() == uNew.GetUID() && uOld.GetGeneration() == uNew.GetGeneration() {
 		if klog.V(8).Enabled() {
 			klog.V(8).InfoS("skipping update event",
 				"gvk", uNew.GetObjectKind().GroupVersionKind(),
