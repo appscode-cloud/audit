@@ -871,11 +871,11 @@ kmodules.xyz/go-containerregistry/name
 ## explicit; go 1.21.5
 kmodules.xyz/offshoot-api/api/v1
 kmodules.xyz/offshoot-api/api/v2
-# kmodules.xyz/resource-metadata v0.18.2
+# kmodules.xyz/resource-metadata v0.18.3-0.20240409101929-fb5a9a4840c3
 ## explicit; go 1.22.0
 kmodules.xyz/resource-metadata/apis/core/v1alpha1
 kmodules.xyz/resource-metadata/apis/shared
-# kmodules.xyz/resource-metrics v0.29.1
+# kmodules.xyz/resource-metrics v0.29.5
 ## explicit; go 1.21.5
 kmodules.xyz/resource-metrics
 kmodules.xyz/resource-metrics/api
@@ -883,6 +883,7 @@ kmodules.xyz/resource-metrics/apps/v1
 kmodules.xyz/resource-metrics/batch/v1
 kmodules.xyz/resource-metrics/batch/v1beta1
 kmodules.xyz/resource-metrics/core/v1
+kmodules.xyz/resource-metrics/kafka.kubedb.com/v1alpha1
 kmodules.xyz/resource-metrics/kubedb.com/v1alpha2
 kmodules.xyz/resource-metrics/kubevault.com/v1alpha2
 kmodules.xyz/resource-metrics/ops.kubedb.com/v1alpha1

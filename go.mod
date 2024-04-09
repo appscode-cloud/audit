@@ -18,7 +18,7 @@ require (
 	k8s.io/klog/v2 v2.120.1
 	kmodules.xyz/client-go v0.29.13
 	kmodules.xyz/custom-resources v0.29.1
-	kmodules.xyz/resource-metadata v0.18.2
+	kmodules.xyz/resource-metadata v0.18.3-0.20240409101929-fb5a9a4840c3
 	sigs.k8s.io/controller-runtime v0.17.2
 )
 
@@ -117,7 +117,7 @@ require (
 	kmodules.xyz/apiversion v0.2.0 // indirect
 	kmodules.xyz/go-containerregistry v0.0.12 // indirect
 	kmodules.xyz/offshoot-api v0.29.0 // indirect
-	kmodules.xyz/resource-metrics v0.29.1 // indirect
+	kmodules.xyz/resource-metrics v0.29.5 // indirect
 	sigs.k8s.io/cli-utils v0.34.0 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
