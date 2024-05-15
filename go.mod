@@ -8,15 +8,15 @@ require (
 	github.com/cloudevents/sdk-go/v2 v2.15.2
 	github.com/nats-io/nats.go v1.33.1
 	github.com/pkg/errors v0.9.1
-	go.bytebuilders.dev/license-verifier v0.14.1-0.20240515152653-e93ed1bfeb62
-	go.bytebuilders.dev/license-verifier/kubernetes v0.14.1-0.20240515152653-e93ed1bfeb62
+	go.bytebuilders.dev/license-verifier v0.14.1
+	go.bytebuilders.dev/license-verifier/kubernetes v0.14.1
 	gomodules.xyz/counter v0.0.1
 	gomodules.xyz/sync v0.1.0
 	k8s.io/api v0.29.2
 	k8s.io/apimachinery v0.29.2
 	k8s.io/client-go v0.29.2
 	k8s.io/klog/v2 v2.120.1
-	kmodules.xyz/client-go v0.29.13
+	kmodules.xyz/client-go v0.29.14
 	kmodules.xyz/custom-resources v0.29.1
 	kmodules.xyz/resource-metadata v0.18.5-0.20240515103715-d1619175e49a
 	sigs.k8s.io/controller-runtime v0.17.4
@@ -50,7 +50,7 @@ require (
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/go-containerregistry v0.19.0 // indirect
+	github.com/google/go-containerregistry v0.19.1 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/huandu/xstrings v1.4.0 // indirect
@@ -115,7 +115,7 @@ require (
 	k8s.io/apiserver v0.29.2 // indirect
 	k8s.io/component-base v0.29.2 // indirect
 	k8s.io/kube-aggregator v0.29.2 // indirect
-	k8s.io/kube-openapi v0.0.0-20240228011516-70dd3763d340 // indirect
+	k8s.io/kube-openapi v0.0.0-20240403164606-bc84c2ddaf99 // indirect
 	k8s.io/utils v0.0.0-20240102154912-e7106e64919e // indirect
 	kmodules.xyz/apiversion v0.2.0 // indirect
 	kmodules.xyz/go-containerregistry v0.0.12 // indirect
