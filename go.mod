@@ -8,8 +8,8 @@ require (
 	github.com/cloudevents/sdk-go/v2 v2.15.2
 	github.com/nats-io/nats.go v1.33.1
 	github.com/pkg/errors v0.9.1
-	go.bytebuilders.dev/license-verifier v0.14.1-0.20240515145142-87befad2c733
-	go.bytebuilders.dev/license-verifier/kubernetes v0.14.1-0.20240515145142-87befad2c733
+	go.bytebuilders.dev/license-verifier v0.14.1-0.20240515152653-e93ed1bfeb62
+	go.bytebuilders.dev/license-verifier/kubernetes v0.14.1-0.20240515152653-e93ed1bfeb62
 	gomodules.xyz/counter v0.0.1
 	gomodules.xyz/sync v0.1.0
 	k8s.io/api v0.29.2
