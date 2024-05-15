@@ -86,6 +86,9 @@ func NewNatsConfig(cfg *rest.Config, clusterID string, LicenseFile string) (*Nat
 		return nil, nil, err
 	}
 	license, licenseBytes := le.LoadLicense()
+	if license.Status != v1alpha1.LicenseActive {
+		return nil, nil, fmt.Errorf("license status is %s", license.Status)
+	}
 
 	opts := verifier.Options{
 		ClusterUID: clusterID,
