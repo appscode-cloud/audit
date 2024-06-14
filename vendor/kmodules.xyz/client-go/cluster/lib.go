@@ -28,6 +28,7 @@ import (
 	cu "kmodules.xyz/client-go/client"
 
 	core "k8s.io/api/core/v1"
+	kerr "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -46,25 +47,27 @@ func ClusterUID(c client.Reader) (string, error) {
 }
 
 func ClusterMetadata(c client.Reader) (*kmapi.ClusterMetadata, error) {
-	var cm core.ConfigMap
-	err := c.Get(context.TODO(), client.ObjectKey{Name: kmapi.AceInfoConfigMapName, Namespace: metav1.NamespacePublic}, &cm)
+	var ns core.Namespace
+	err := c.Get(context.TODO(), client.ObjectKey{Name: metav1.NamespaceSystem}, &ns)
 	if err != nil {
 		return nil, err
-	}
-	result, err := ClusterMetadataForConfigMap(&cm)
-	if err == nil {
-		return result, nil
 	}
 
-	var ns core.Namespace
-	err = c.Get(context.TODO(), client.ObjectKey{Name: metav1.NamespaceSystem}, &ns)
-	if err != nil {
+	var cm core.ConfigMap
+	err = c.Get(context.TODO(), client.ObjectKey{Name: kmapi.AceInfoConfigMapName, Namespace: metav1.NamespacePublic}, &cm)
+	if err == nil {
+		result, err := ClusterMetadataFromConfigMap(&cm, string(ns.UID))
+		if err == nil {
+			return result, nil
+		}
+	} else if !kerr.IsNotFound(err) {
 		return nil, err
 	}
-	return LegacyClusterMetadataForNamespace(&ns)
+
+	return LegacyClusterMetadataFromNamespace(&ns)
 }
 
-func LegacyClusterMetadataForNamespace(ns *core.Namespace) (*kmapi.ClusterMetadata, error) {
+func LegacyClusterMetadataFromNamespace(ns *core.Namespace) (*kmapi.ClusterMetadata, error) {
 	if ns.Name != metav1.NamespaceSystem {
 		return nil, fmt.Errorf("expected namespace %s, found namespace %s", metav1.NamespaceSystem, ns.Name)
 	}
@@ -81,7 +84,7 @@ func LegacyClusterMetadataForNamespace(ns *core.Namespace) (*kmapi.ClusterMetada
 	return md, nil
 }
 
-func ClusterMetadataForConfigMap(cm *core.ConfigMap) (*kmapi.ClusterMetadata, error) {
+func ClusterMetadataFromConfigMap(cm *core.ConfigMap, clusterUIDVerifier string) (*kmapi.ClusterMetadata, error) {
 	if cm.Name != kmapi.AceInfoConfigMapName || cm.Namespace != metav1.NamespacePublic {
 		return nil, fmt.Errorf("expected configmap %s/%s, found %s/%s", metav1.NamespacePublic, kmapi.AceInfoConfigMapName, cm.Namespace, cm.Name)
 	}
@@ -101,7 +104,7 @@ func ClusterMetadataForConfigMap(cm *core.ConfigMap) (*kmapi.ClusterMetadata, er
 	if err != nil {
 		return nil, err
 	}
-	hasher := hmac.New(sha256.New, []byte(md.UID))
+	hasher := hmac.New(sha256.New, []byte(clusterUIDVerifier))
 	hasher.Write(data)
 	messageMAC := hasher.Sum(nil)
 	expectedMAC := cm.BinaryData["mac"]
