@@ -2,22 +2,22 @@ module go.bytebuilders.dev/audit
 
 go 1.22.1
 
-toolchain go1.22.4
+toolchain go1.22.5
 
 require (
 	github.com/cloudevents/sdk-go/v2 v2.15.2
-	github.com/nats-io/nats.go v1.35.0
+	github.com/nats-io/nats.go v1.36.0
 	github.com/pkg/errors v0.9.1
 	go.bytebuilders.dev/license-verifier v0.14.1
 	go.bytebuilders.dev/license-verifier/kubernetes v0.14.1
 	gomodules.xyz/counter v0.0.1
 	gomodules.xyz/sync v0.1.0
-	k8s.io/api v0.30.1
-	k8s.io/apimachinery v0.30.1
-	k8s.io/client-go v0.30.1
-	k8s.io/klog/v2 v2.120.1
-	kmodules.xyz/client-go v0.30.5
-	kmodules.xyz/resource-metadata v0.18.8-0.20240614001230-063fb3a89196
+	k8s.io/api v0.30.2
+	k8s.io/apimachinery v0.30.2
+	k8s.io/client-go v0.30.2
+	k8s.io/klog/v2 v2.130.1
+	kmodules.xyz/client-go v0.30.9
+	kmodules.xyz/resource-metadata v0.18.10
 	sigs.k8s.io/controller-runtime v0.18.4
 )
 
@@ -87,7 +87,7 @@ require (
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
-	go.bytebuilders.dev/license-proxyserver v0.0.8 // indirect
+	go.bytebuilders.dev/license-proxyserver v0.0.11 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.26.0 // indirect
 	golang.org/x/crypto v0.22.0 // indirect
@@ -113,7 +113,7 @@ require (
 	k8s.io/apiextensions-apiserver v0.30.1 // indirect
 	k8s.io/apiserver v0.30.1 // indirect
 	k8s.io/kube-aggregator v0.30.1 // indirect
-	k8s.io/kube-openapi v0.0.0-20240521193020-835d969ad83a // indirect
+	k8s.io/kube-openapi v0.0.0-20240430033511-f0e62f92d13f // indirect
 	k8s.io/utils v0.0.0-20240102154912-e7106e64919e // indirect
 	kmodules.xyz/apiversion v0.2.0 // indirect
 	kmodules.xyz/go-containerregistry v0.0.12 // indirect
