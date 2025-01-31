@@ -50,7 +50,7 @@ func (p *BillingEventCreator) CreateEvent(obj client.Object) (*api.Event, error)
 	if p.ClientBilling {
 		if r, ok := obj.(Resource); ok {
 			var podList core.PodList
-			err = p.PodLister.List(context.TODO(), &podList, client.InNamespace(obj.GetNamespace()), client.MatchingLabels(r.OffshootLabels()))
+			err = p.PodLister.List(context.TODO(), &podList, client.InNamespace(obj.GetNamespace()), client.MatchingLabels(r.OffshootSelectors()))
 			if err != nil {
 				return nil, err
 			}
@@ -82,7 +82,7 @@ func (p *BillingEventCreator) CreateEvent(obj client.Object) (*api.Event, error)
 			res.Spec.Pods = podresources
 
 			var pvcList core.PersistentVolumeClaimList
-			err = p.PVCLister.List(context.TODO(), &pvcList, client.InNamespace(obj.GetNamespace()), client.MatchingLabels(r.OffshootLabels()))
+			err = p.PVCLister.List(context.TODO(), &pvcList, client.InNamespace(obj.GetNamespace()), client.MatchingLabels(r.OffshootSelectors()))
 			if err != nil {
 				return nil, err
 			}
@@ -108,5 +108,5 @@ func (p *BillingEventCreator) CreateEvent(obj client.Object) (*api.Event, error)
 }
 
 type Resource interface {
-	OffshootLabels() map[string]string
+	OffshootSelectors() map[string]string
 }
