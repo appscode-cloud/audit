@@ -50,6 +50,12 @@ type NatsConfig struct {
 	Server  string `json:"natsServer"`
 }
 
+// NatsCredential represents the api response of the register licensed user api
+type NatsCredential struct {
+	NatsConfig `json:",inline,omitempty"`
+	Credential []byte `json:"credential"`
+}
+
 type NatsClient struct {
 	cfg         *rest.Config
 	clusterID   string
@@ -64,14 +70,12 @@ type NatsClient struct {
 	mu      sync.Mutex
 }
 
-// NatsCredential represents the api response of the register licensed user api
-type NatsCredential struct {
-	NatsConfig `json:",inline,omitempty"`
-	Credential []byte `json:"credential"`
-}
-
-type LicenseIDGetter interface {
-	GetLicenseID() string
+func NewNatsClient(cfg *rest.Config, clusterID string, LicenseFile string) *NatsClient {
+	return &NatsClient{
+		cfg:         cfg,
+		clusterID:   clusterID,
+		LicenseFile: LicenseFile,
+	}
 }
 
 func (c *NatsClient) Request(data []byte, timeout time.Duration) (*nats.Msg, error) {
@@ -121,14 +125,6 @@ func (c *NatsClient) GetLicenseID() string {
 		c.l = &license
 	}
 	return c.l.ID
-}
-
-func NewNatsConfig(cfg *rest.Config, clusterID string, LicenseFile string) *NatsClient {
-	return &NatsClient{
-		cfg:         cfg,
-		clusterID:   clusterID,
-		LicenseFile: LicenseFile,
-	}
 }
 
 func (c *NatsClient) connect() error {
