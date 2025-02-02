@@ -8,16 +8,15 @@ require (
 	github.com/cloudevents/sdk-go/v2 v2.15.2
 	github.com/nats-io/nats.go v1.38.0
 	github.com/pkg/errors v0.9.1
-	go.bytebuilders.dev/license-verifier v0.14.4
-	go.bytebuilders.dev/license-verifier/kubernetes v0.14.4
+	go.bytebuilders.dev/license-verifier v0.14.6
+	go.bytebuilders.dev/license-verifier/kubernetes v0.14.6
 	gomodules.xyz/counter v0.0.1
-	gomodules.xyz/sync v0.1.0
 	k8s.io/api v0.30.2
 	k8s.io/apimachinery v0.30.2
 	k8s.io/client-go v0.30.2
 	k8s.io/klog/v2 v2.130.1
 	kmodules.xyz/client-go v0.30.44
-	kmodules.xyz/resource-metadata v0.24.1
+	kmodules.xyz/resource-metadata v0.24.3
 	sigs.k8s.io/controller-runtime v0.18.4
 )
 
@@ -91,7 +90,7 @@ require (
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
-	go.bytebuilders.dev/license-proxyserver v0.0.19 // indirect
+	go.bytebuilders.dev/license-proxyserver v0.0.20 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/crypto v0.31.0 // indirect
