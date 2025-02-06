@@ -6,7 +6,7 @@ toolchain go1.22.5
 
 require (
 	github.com/cloudevents/sdk-go/v2 v2.15.2
-	github.com/nats-io/nats.go v1.38.0
+	github.com/nats-io/nats.go v1.39.0
 	github.com/pkg/errors v0.9.1
 	go.bytebuilders.dev/license-verifier v0.14.6
 	go.bytebuilders.dev/license-verifier/kubernetes v0.14.6
