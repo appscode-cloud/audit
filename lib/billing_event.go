@@ -60,6 +60,7 @@ func (p *BillingEventCreator) CreateEvent(obj client.Object) (*api.Event, error)
 			Name:              ns.Name,
 			CreationTimestamp: ns.CreationTimestamp,
 		}
+		res.Spec.Namespace.SkipBilling = ns.Annotations[kmapi.AceSkipBillingKey] == "true"
 		if ns.Labels[kmapi.ClientOrgKey] == "true" {
 			res.Spec.Namespace.AceOrgID = ns.Annotations[kmapi.AceOrgIDKey]
 
