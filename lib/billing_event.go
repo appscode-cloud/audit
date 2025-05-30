@@ -23,7 +23,9 @@ import (
 	api "go.bytebuilders.dev/audit/api/v1"
 
 	core "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	kmapi "kmodules.xyz/client-go/api/v1"
+	clustermeta "kmodules.xyz/client-go/cluster"
 	"kmodules.xyz/client-go/discovery"
 	corev1alpha1 "kmodules.xyz/resource-metadata/apis/core/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -72,6 +74,14 @@ func (p *BillingEventCreator) CreateEvent(obj client.Object) (*api.Event, error)
 			}
 			res.Spec.Namespace.AceOrgMetadata = orgMetadata
 		}
+
+		// ensure cluster mode is always up-to-date
+		var ks core.Namespace
+		err = p.NamespaceLister.Get(context.TODO(), client.ObjectKey{Name: metav1.NamespaceSystem}, &ks)
+		if err != nil {
+			return nil, err
+		}
+		res.Spec.Cluster.Mode = clustermeta.DetectClusterMode(&ks)
 	}
 
 	if p.ClientBilling {
