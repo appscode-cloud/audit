@@ -6,7 +6,7 @@ toolchain go1.24.3
 
 require (
 	github.com/cloudevents/sdk-go/v2 v2.15.2
-	github.com/nats-io/nats.go v1.42.0
+	github.com/nats-io/nats.go v1.44.0
 	github.com/pkg/errors v0.9.1
 	go.bytebuilders.dev/license-verifier v0.14.9
 	go.bytebuilders.dev/license-verifier/kubernetes v0.14.9
@@ -15,8 +15,8 @@ require (
 	k8s.io/apimachinery v0.32.3
 	k8s.io/client-go v0.32.3
 	k8s.io/klog/v2 v2.130.1
-	kmodules.xyz/client-go v0.32.6
-	kmodules.xyz/resource-metadata v0.30.1
+	kmodules.xyz/client-go v0.32.7
+	kmodules.xyz/resource-metadata v0.32.1
 	sigs.k8s.io/controller-runtime v0.20.4
 )
 
@@ -121,7 +121,7 @@ require (
 	kmodules.xyz/apiversion v0.2.0 // indirect
 	kmodules.xyz/go-containerregistry v0.0.14 // indirect
 	kmodules.xyz/offshoot-api v0.32.0 // indirect
-	kmodules.xyz/resource-metrics v0.30.6 // indirect
+	kmodules.xyz/resource-metrics v0.30.10 // indirect
 	moul.io/http2curl/v2 v2.3.1-0.20221024080105-10c404f653f7 // indirect
 	sigs.k8s.io/cli-utils v0.37.2 // indirect
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect
