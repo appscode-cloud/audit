@@ -25,7 +25,6 @@ _testmain.go
 .idea/
 dist/
 **/junit.xml
-**/.env
 .vscode/
 coverage.txt
 
@@ -34,3 +33,5 @@ coverage.txt
 
 apiserver.local.config/**
 .DS_Store
+config.bat
+node_modules
