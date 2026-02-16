@@ -337,7 +337,7 @@ github.com/yudai/golcs
 # github.com/zeebo/xxh3 v1.0.2
 ## explicit; go 1.17
 github.com/zeebo/xxh3
-# go.bytebuilders.dev/license-proxyserver v0.0.25
+# go.bytebuilders.dev/license-proxyserver v0.0.26
 ## explicit; go 1.25.0
 go.bytebuilders.dev/license-proxyserver/apis/proxyserver
 go.bytebuilders.dev/license-proxyserver/apis/proxyserver/v1alpha1
@@ -965,8 +965,8 @@ kmodules.xyz/go-containerregistry/name
 ## explicit; go 1.24.0
 kmodules.xyz/offshoot-api/api/v1
 kmodules.xyz/offshoot-api/api/v2
-# kmodules.xyz/resource-metadata v0.40.2
-## explicit; go 1.24.0
+# kmodules.xyz/resource-metadata v0.42.1
+## explicit; go 1.25
 kmodules.xyz/resource-metadata/apis/core/v1alpha1
 kmodules.xyz/resource-metadata/apis/identity/v1alpha1
 kmodules.xyz/resource-metadata/apis/shared
