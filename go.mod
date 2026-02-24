@@ -13,8 +13,8 @@ require (
 	k8s.io/apimachinery v0.34.3
 	k8s.io/client-go v0.34.3
 	k8s.io/klog/v2 v2.130.1
-	kmodules.xyz/client-go v0.34.2
-	kmodules.xyz/resource-metadata v0.42.1
+	kmodules.xyz/client-go v0.34.3
+	kmodules.xyz/resource-metadata v0.42.4
 	sigs.k8s.io/controller-runtime v0.22.4
 )
 
@@ -108,7 +108,7 @@ require (
 	golang.org/x/net v0.47.0 // indirect
 	golang.org/x/oauth2 v0.33.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
-	golang.org/x/sys v0.39.0 // indirect
+	golang.org/x/sys v0.40.0 // indirect
 	golang.org/x/term v0.38.0 // indirect
 	golang.org/x/text v0.32.0 // indirect
 	golang.org/x/time v0.14.0 // indirect
