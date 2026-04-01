@@ -9,6 +9,7 @@ require (
 	go.bytebuilders.dev/license-verifier v0.15.0
 	go.bytebuilders.dev/license-verifier/kubernetes v0.15.0
 	gomodules.xyz/counter v0.0.1
+	gomodules.xyz/oneliners v0.0.1
 	k8s.io/api v0.34.3
 	k8s.io/apimachinery v0.34.3
 	k8s.io/client-go v0.34.3

@@ -23,6 +23,7 @@ import (
 	api "go.bytebuilders.dev/audit/api/v1"
 
 	"gomodules.xyz/counter/hourly"
+	"gomodules.xyz/oneliners"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/client-go/tools/cache"
@@ -136,6 +137,7 @@ func (p *ResourceEventPublisher) OnDelete(obj any) {
 		return
 	}
 
+	oneliners.PrettyJson(ev)
 	if err := p.p.Publish(ev, api.EventDeleted); err != nil {
 		klog.V(5).InfoS("failed to publish event", "error", err)
 		return
