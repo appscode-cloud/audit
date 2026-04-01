@@ -29,6 +29,7 @@ import (
 	"github.com/cloudevents/sdk-go/v2/binding/format"
 	cloudevents "github.com/cloudevents/sdk-go/v2/event"
 	"go.bytebuilders.dev/license-verifier/info"
+	"gomodules.xyz/oneliners"
 	core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -98,11 +99,13 @@ func (p *EventPublisher) Publish(ev *api.Event, et api.EventType) error {
 	if err := event.SetData(cloudevents.ApplicationJSON, ev); err != nil {
 		return err
 	}
+	oneliners.PrettyJson(event.Data())
 
 	data, err := format.JSON.Marshal(&event)
 	if err != nil {
 		return err
 	}
+	oneliners.PrettyJson(data)
 
 	ctx, cancel := context.WithTimeout(context.TODO(), natsEventPublishTimeout)
 	defer cancel()
