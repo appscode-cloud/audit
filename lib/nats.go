@@ -20,23 +20,39 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/nats-io/nats.go"
-	"github.com/pkg/errors"
+	pkgerrors "github.com/pkg/errors"
 	verifier "go.bytebuilders.dev/license-verifier"
 	"go.bytebuilders.dev/license-verifier/apis/licenses/v1alpha1"
 	"go.bytebuilders.dev/license-verifier/info"
 	"go.bytebuilders.dev/license-verifier/kubernetes"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/serializer"
+	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
+	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
+	identityapi "kmodules.xyz/resource-metadata/apis/identity/v1alpha1"
 )
+
+var identityScheme = runtime.NewScheme()
+
+func init() {
+	utilruntime.Must(identityapi.AddToScheme(identityScheme))
+	utilruntime.Must(identityapi.AddToScheme(scheme.Scheme))
+}
 
 const (
 	natsConnectionTimeout       = 350 * time.Millisecond
@@ -155,41 +171,14 @@ func (c *NatsClient) connect() error {
 		return fmt.Errorf("license status is %s", license.Status)
 	}
 
-	opts := verifier.Options{
-		ClusterUID: c.clusterID,
-		Features:   info.ProductName,
-		CACert:     []byte(info.LicenseCA),
-		License:    licenseBytes,
-	}
-	data, err := json.Marshal(opts)
-	if err != nil {
-		return err
-	}
-
-	resp, err := http.Post(info.MustRegistrationAPIEndpoint(), "application/json", bytes.NewReader(data))
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close() // nolint:errcheck
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return err
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return errors.New(resp.Status + ", " + string(body))
-	}
-
-	var natscred NatsCredential
-	err = json.Unmarshal(body, &natscred)
+	natscred, err := c.fetchNatsCredential(licenseBytes)
 	if err != nil {
 		return err
 	}
 
 	klog.V(5).InfoS("using event receiver", "address", natscred.Server, "subject", natscred.Subject, "licenseID", license.ID)
 
-	nc, err := NewConnection(license.ID, natscred)
+	nc, err := NewConnection(license.ID, *natscred)
 	if err != nil {
 		return err
 	}
@@ -200,6 +189,140 @@ func (c *NatsClient) connect() error {
 	c.Subject = natscred.Subject
 	c.Server = natscred.Server
 	return nil
+}
+
+// fetchNatsCredential obtains a NATS credential by first calling the public
+// appscode.com Register endpoint. If that call fails because the cluster
+// cannot reach appscode.com (DNS failure, connection refused, timeout, etc.),
+// it falls back to the in-cluster identity.k8s.appscode.com extended API.
+func (c *NatsClient) fetchNatsCredential(licenseBytes []byte) (*NatsCredential, error) {
+	natscred, err := registerWithAppsCode(c.clusterID, licenseBytes)
+	if err == nil {
+		return natscred, nil
+	}
+	if !isNoConnectivityErr(err) {
+		return nil, err
+	}
+	klog.V(5).InfoS("appscode.com unreachable; falling back to extended API",
+		"error", err.Error())
+	return registerViaExtendedAPI(c.cfg, licenseBytes)
+}
+
+func registerWithAppsCode(clusterID string, licenseBytes []byte) (*NatsCredential, error) {
+	opts := verifier.Options{
+		ClusterUID: clusterID,
+		Features:   info.ProductName,
+		CACert:     []byte(info.LicenseCA),
+		License:    licenseBytes,
+	}
+	data, err := json.Marshal(opts)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.Post(info.MustRegistrationAPIEndpoint(), "application/json", bytes.NewReader(data))
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close() // nolint:errcheck
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return nil, pkgerrors.New(resp.Status + ", " + string(body))
+	}
+
+	var natscred NatsCredential
+	if err = json.Unmarshal(body, &natscred); err != nil {
+		return nil, err
+	}
+	return &natscred, nil
+}
+
+func registerViaExtendedAPI(cfg *rest.Config, licenseBytes []byte) (*NatsCredential, error) {
+	gv := identityapi.SchemeGroupVersion
+	rc := rest.CopyConfig(cfg)
+	rc.GroupVersion = &gv
+	rc.APIPath = "/apis"
+	rc.NegotiatedSerializer = serializer.NewCodecFactory(identityScheme).WithoutConversion()
+	if rc.UserAgent == "" {
+		rc.UserAgent = rest.DefaultKubernetesUserAgent()
+	}
+
+	restClient, err := rest.RESTClientFor(rc)
+	if err != nil {
+		return nil, err
+	}
+
+	body := &identityapi.NatsCredentialRequest{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: gv.String(),
+			Kind:       identityapi.ResourceKindNatsCredentialRequest,
+		},
+		Request: &identityapi.NatsCredentialRequestRequest{
+			Features: info.ProductName,
+			License:  licenseBytes,
+		},
+	}
+	result := &identityapi.NatsCredentialRequest{}
+	err = restClient.Post().
+		Resource(identityapi.ResourceNatsCredentialRequests).
+		Body(body).
+		Do(context.TODO()).
+		Into(result)
+	if err != nil {
+		return nil, err
+	}
+	if result.Response == nil {
+		return nil, pkgerrors.New("extended api returned empty NatsCredentialRequest response")
+	}
+	return &NatsCredential{
+		NatsConfig: NatsConfig{
+			Subject: result.Response.Subject,
+			Server:  result.Response.Server,
+		},
+		Credential: result.Response.Credential,
+	}, nil
+}
+
+// isNoConnectivityErr reports whether err looks like the audit lib failed to
+// reach appscode.com over the network (DNS lookup, connection refused,
+// connection timeout, TLS handshake against an unreachable host, etc.).
+// Auth, 4xx or 5xx responses from appscode.com are *not* treated as
+// "no connectivity" — those propagate to the caller as usual.
+func isNoConnectivityErr(err error) bool {
+	if err == nil {
+		return false
+	}
+	var dnsErr *net.DNSError
+	if errors.As(err, &dnsErr) {
+		return true
+	}
+	var opErr *net.OpError
+	if errors.As(err, &opErr) {
+		return true
+	}
+	var urlErr *url.Error
+	if errors.As(err, &urlErr) {
+		if urlErr.Timeout() {
+			return true
+		}
+		// fall through to message inspection on the wrapped error
+		return isNoConnectivityErr(urlErr.Err)
+	}
+	msg := err.Error()
+	switch {
+	case strings.Contains(msg, "no such host"),
+		strings.Contains(msg, "connection refused"),
+		strings.Contains(msg, "network is unreachable"),
+		strings.Contains(msg, "no route to host"),
+		strings.Contains(msg, "i/o timeout"),
+		strings.Contains(msg, "TLS handshake timeout"):
+		return true
+	}
+	return false
 }
 
 // NewConnection creates a new NATS connection
