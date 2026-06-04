@@ -5,7 +5,6 @@ go 1.25.0
 require (
 	github.com/cloudevents/sdk-go/v2 v2.15.2
 	github.com/nats-io/nats.go v1.49.0
-	github.com/pkg/errors v0.9.1
 	go.bytebuilders.dev/license-verifier v0.15.0
 	go.bytebuilders.dev/license-verifier/kubernetes v0.15.0
 	gomodules.xyz/counter v0.0.1
@@ -14,7 +13,7 @@ require (
 	k8s.io/client-go v0.34.3
 	k8s.io/klog/v2 v2.130.1
 	kmodules.xyz/client-go v0.34.3
-	kmodules.xyz/resource-metadata v0.42.4
+	kmodules.xyz/resource-metadata v0.46.1-0.20260604054459-ba20b6454d28
 	sigs.k8s.io/controller-runtime v0.22.4
 )
 
@@ -28,9 +27,10 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.18.1 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/docker/cli v29.0.3+incompatible // indirect
+	github.com/docker/cli v29.2.0+incompatible // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.9.4 // indirect
+	github.com/docker/go-units v0.5.0 // indirect
 	github.com/emicklei/go-restful/v3 v3.13.0 // indirect
 	github.com/evanphx/json-patch v5.9.11+incompatible // indirect
 	github.com/evanphx/json-patch/v5 v5.9.11 // indirect
@@ -80,6 +80,7 @@ require (
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.1 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/prometheus/client_golang v1.22.0 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
@@ -99,7 +100,7 @@ require (
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
-	go.bytebuilders.dev/license-proxyserver v0.0.26 // indirect
+	go.bytebuilders.dev/license-proxyserver v0.1.1 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
