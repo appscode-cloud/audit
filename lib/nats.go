@@ -31,22 +31,12 @@ import (
 	"go.bytebuilders.dev/license-verifier/info"
 	"go.bytebuilders.dev/license-verifier/kubernetes"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/serializer"
-	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
-	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
 	identityapi "kmodules.xyz/resource-metadata/apis/identity/v1alpha1"
+	identityclient "kmodules.xyz/resource-metadata/client/clientset/versioned/typed/identity/v1alpha1"
 	identitylib "kmodules.xyz/resource-metadata/pkg/identity"
 )
-
-var identityScheme = runtime.NewScheme()
-
-func init() {
-	utilruntime.Must(identityapi.AddToScheme(identityScheme))
-	utilruntime.Must(identityapi.AddToScheme(scheme.Scheme))
-}
 
 const (
 	natsConnectionTimeout       = 350 * time.Millisecond
@@ -217,36 +207,17 @@ func registerWithAppsCode(clusterID string, licenseBytes []byte) (*NatsCredentia
 }
 
 func registerViaExtendedAPI(cfg *rest.Config, licenseBytes []byte) (*NatsCredential, error) {
-	gv := identityapi.SchemeGroupVersion
-	rc := rest.CopyConfig(cfg)
-	rc.GroupVersion = &gv
-	rc.APIPath = "/apis"
-	rc.NegotiatedSerializer = serializer.NewCodecFactory(identityScheme).WithoutConversion()
-	if rc.UserAgent == "" {
-		rc.UserAgent = rest.DefaultKubernetesUserAgent()
-	}
-
-	restClient, err := rest.RESTClientFor(rc)
+	ic, err := identityclient.NewForConfig(cfg)
 	if err != nil {
 		return nil, err
 	}
-
-	body := &identityapi.AuditTokenRequest{
-		TypeMeta: metav1.TypeMeta{
-			APIVersion: gv.String(),
-			Kind:       identityapi.ResourceKindAuditTokenRequest,
-		},
+	req := &identityapi.AuditTokenRequest{
 		Request: &identityapi.AuditTokenRequestRequest{
 			Features: info.ProductName,
 			License:  licenseBytes,
 		},
 	}
-	result := &identityapi.AuditTokenRequest{}
-	err = restClient.Post().
-		Resource(identityapi.ResourceAuditTokenRequests).
-		Body(body).
-		Do(context.TODO()).
-		Into(result)
+	result, err := ic.AuditTokenRequests().Create(context.TODO(), req, metav1.CreateOptions{})
 	if err != nil {
 		return nil, err
 	}
