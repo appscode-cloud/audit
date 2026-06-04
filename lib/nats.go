@@ -28,7 +28,6 @@ import (
 	"time"
 
 	"github.com/nats-io/nats.go"
-	pkgerrors "github.com/pkg/errors"
 	"go.bytebuilders.dev/license-verifier/apis/licenses/v1alpha1"
 	"go.bytebuilders.dev/license-verifier/info"
 	"go.bytebuilders.dev/license-verifier/kubernetes"
@@ -253,7 +252,7 @@ func registerViaExtendedAPI(cfg *rest.Config, licenseBytes []byte) (*NatsCredent
 		return nil, err
 	}
 	if result.Response == nil {
-		return nil, pkgerrors.New("extended api returned empty AuditTokenRequest response")
+		return nil, errors.New("extended api returned empty AuditTokenRequest response")
 	}
 	return &NatsCredential{
 		NatsConfig: NatsConfig{

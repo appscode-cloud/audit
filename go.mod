@@ -5,7 +5,6 @@ go 1.25.0
 require (
 	github.com/cloudevents/sdk-go/v2 v2.15.2
 	github.com/nats-io/nats.go v1.49.0
-	github.com/pkg/errors v0.9.1
 	go.bytebuilders.dev/license-verifier v0.15.0
 	go.bytebuilders.dev/license-verifier/kubernetes v0.15.0
 	gomodules.xyz/counter v0.0.1
@@ -81,6 +80,7 @@ require (
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.1 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/prometheus/client_golang v1.22.0 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
