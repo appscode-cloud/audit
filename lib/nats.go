@@ -205,7 +205,7 @@ func (c *NatsClient) fetchNatsCredential(licenseBytes []byte) (*NatsCredential, 
 }
 
 func registerWithAppsCode(clusterID string, licenseBytes []byte) (*NatsCredential, error) {
-	resp, err := identitylib.NewDefaultClient().GetNatsCredentialForCluster(clusterID, info.ProductName, licenseBytes)
+	resp, err := identitylib.NewDefaultClient().GetAuditTokenForCluster(clusterID, info.ProductName, licenseBytes)
 	if err != nil {
 		return nil, err
 	}
@@ -233,19 +233,19 @@ func registerViaExtendedAPI(cfg *rest.Config, licenseBytes []byte) (*NatsCredent
 		return nil, err
 	}
 
-	body := &identityapi.NatsCredentialRequest{
+	body := &identityapi.AuditTokenRequest{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: gv.String(),
-			Kind:       identityapi.ResourceKindNatsCredentialRequest,
+			Kind:       identityapi.ResourceKindAuditTokenRequest,
 		},
-		Request: &identityapi.NatsCredentialRequestRequest{
+		Request: &identityapi.AuditTokenRequestRequest{
 			Features: info.ProductName,
 			License:  licenseBytes,
 		},
 	}
-	result := &identityapi.NatsCredentialRequest{}
+	result := &identityapi.AuditTokenRequest{}
 	err = restClient.Post().
-		Resource(identityapi.ResourceNatsCredentialRequests).
+		Resource(identityapi.ResourceAuditTokenRequests).
 		Body(body).
 		Do(context.TODO()).
 		Into(result)
@@ -253,7 +253,7 @@ func registerViaExtendedAPI(cfg *rest.Config, licenseBytes []byte) (*NatsCredent
 		return nil, err
 	}
 	if result.Response == nil {
-		return nil, pkgerrors.New("extended api returned empty NatsCredentialRequest response")
+		return nil, pkgerrors.New("extended api returned empty AuditTokenRequest response")
 	}
 	return &NatsCredential{
 		NatsConfig: NatsConfig{
