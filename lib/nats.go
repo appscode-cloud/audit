@@ -205,7 +205,11 @@ func (c *NatsClient) fetchNatsCredential(licenseBytes []byte) (*NatsCredential, 
 }
 
 func registerWithAppsCode(clusterID string, licenseBytes []byte) (*NatsCredential, error) {
-	resp, err := identitylib.GetNatsCredentialForCluster(nil, "", "", clusterID, info.ProductName, licenseBytes)
+	bc, err := identitylib.NewClient("", "", nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := bc.GetNatsCredentialForCluster(clusterID, info.ProductName, licenseBytes)
 	if err != nil {
 		return nil, err
 	}
