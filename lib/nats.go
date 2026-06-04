@@ -20,8 +20,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net"
-	"net/url"
+	"net/http"
 	"os"
 	"strings"
 	"sync"
@@ -263,41 +262,25 @@ func registerViaExtendedAPI(cfg *rest.Config, licenseBytes []byte) (*NatsCredent
 	}, nil
 }
 
-// isNoConnectivityErr reports whether err looks like the audit lib failed to
-// reach appscode.com over the network (DNS lookup, connection refused,
-// connection timeout, TLS handshake against an unreachable host, etc.).
-// Auth, 4xx or 5xx responses from appscode.com are *not* treated as
-// "no connectivity" — those propagate to the caller as usual.
-func isNoConnectivityErr(err error) bool {
-	if err == nil {
+// isNoConnectivityErr reports whether the cluster cannot reach
+// https://appscode.com at all (DNS lookup failure, connection refused,
+// timeout, etc.). It actively probes the host with a short-timeout HEAD
+// request rather than guessing from the registration error, so HTTP error
+// responses from appscode.com (auth failures, 4xx, 5xx) don't accidentally
+// trigger the fallback. The err argument is accepted for future use but
+// currently ignored.
+func isNoConnectivityErr(_ error) bool {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	req, err := http.NewRequestWithContext(ctx, http.MethodHead, "https://appscode.com", nil)
+	if err != nil {
 		return false
 	}
-	var dnsErr *net.DNSError
-	if errors.As(err, &dnsErr) {
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
 		return true
 	}
-	var opErr *net.OpError
-	if errors.As(err, &opErr) {
-		return true
-	}
-	var urlErr *url.Error
-	if errors.As(err, &urlErr) {
-		if urlErr.Timeout() {
-			return true
-		}
-		// fall through to message inspection on the wrapped error
-		return isNoConnectivityErr(urlErr.Err)
-	}
-	msg := err.Error()
-	switch {
-	case strings.Contains(msg, "no such host"),
-		strings.Contains(msg, "connection refused"),
-		strings.Contains(msg, "network is unreachable"),
-		strings.Contains(msg, "no route to host"),
-		strings.Contains(msg, "i/o timeout"),
-		strings.Contains(msg, "TLS handshake timeout"):
-		return true
-	}
+	resp.Body.Close() // nolint:errcheck
 	return false
 }
 
