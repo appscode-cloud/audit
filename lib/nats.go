@@ -17,14 +17,10 @@ limitations under the License.
 package lib
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"net"
-	"net/http"
 	"net/url"
 	"os"
 	"strings"
@@ -33,7 +29,6 @@ import (
 
 	"github.com/nats-io/nats.go"
 	pkgerrors "github.com/pkg/errors"
-	verifier "go.bytebuilders.dev/license-verifier"
 	"go.bytebuilders.dev/license-verifier/apis/licenses/v1alpha1"
 	"go.bytebuilders.dev/license-verifier/info"
 	"go.bytebuilders.dev/license-verifier/kubernetes"
@@ -45,6 +40,7 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
 	identityapi "kmodules.xyz/resource-metadata/apis/identity/v1alpha1"
+	identitylib "kmodules.xyz/resource-metadata/pkg/identity"
 )
 
 var identityScheme = runtime.NewScheme()
@@ -209,36 +205,21 @@ func (c *NatsClient) fetchNatsCredential(licenseBytes []byte) (*NatsCredential, 
 }
 
 func registerWithAppsCode(clusterID string, licenseBytes []byte) (*NatsCredential, error) {
-	opts := verifier.Options{
-		ClusterUID: clusterID,
-		Features:   info.ProductName,
-		CACert:     []byte(info.LicenseCA),
-		License:    licenseBytes,
-	}
-	data, err := json.Marshal(opts)
+	bc, err := identitylib.NewClient("", "", nil, nil)
 	if err != nil {
 		return nil, err
 	}
-
-	resp, err := http.Post(info.MustRegistrationAPIEndpoint(), "application/json", bytes.NewReader(data))
+	resp, err := bc.GetNatsCredentialForCluster(clusterID, info.ProductName, licenseBytes)
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close() // nolint:errcheck
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-	if resp.StatusCode != http.StatusOK {
-		return nil, pkgerrors.New(resp.Status + ", " + string(body))
-	}
-
-	var natscred NatsCredential
-	if err = json.Unmarshal(body, &natscred); err != nil {
-		return nil, err
-	}
-	return &natscred, nil
+	return &NatsCredential{
+		NatsConfig: NatsConfig{
+			Subject: resp.Subject,
+			Server:  resp.Server,
+		},
+		Credential: resp.Credential,
+	}, nil
 }
 
 func registerViaExtendedAPI(cfg *rest.Config, licenseBytes []byte) (*NatsCredential, error) {
