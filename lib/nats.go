@@ -259,14 +259,16 @@ func isNoConnectivityErr(_ error) bool {
 func NewConnection(licenseID string, natscred NatsCredential) (nc *nats.Conn, err error) {
 	servers := natscred.Server
 
-	opts := []nats.Option{
+	opts := make([]nats.Option, 0, 6)
+	opts = append(
+		opts,
 		nats.Name(fmt.Sprintf("%s.%s", licenseID, info.ProductName)),
 		nats.MaxReconnects(-1),
 		nats.ErrorHandler(errorHandler),
 		nats.ReconnectHandler(reconnectHandler),
 		nats.DisconnectErrHandler(disconnectHandler),
 		// nats.UseOldRequestStyle(),
-	}
+	)
 
 	credFile := "/tmp/nats.creds"
 	if err = os.WriteFile(credFile, natscred.Credential, 0o600); err != nil {
